@@ -62,7 +62,14 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = transform.position.z; // Keep the z position the same
-
+        
+        //if mouse is at exact position of player, hide valid range reticle
+        if (mousePosition == transform.position)
+        {
+            validRangeReticleInstance.SetActive(false);
+            return;
+        }
+        
         float distance = Vector3.Distance(transform.position, mousePosition);
         if (distance >= minDistance && distance <= maxDistance)
         {
