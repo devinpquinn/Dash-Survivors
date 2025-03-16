@@ -440,8 +440,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5e103b387909e4a966b15e46c3de86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minDistance: 2
-  maxDistance: 10
+  minDistance: 1
+  maxDistance: 6
   reticlePrefab: {fileID: 194075436230715057, guid: 00932db1eb2e67b41befed54f00aafc1, type: 3}
   validRangeSprite: {fileID: 21300000, guid: 55eddf2031a34e64dae9d5368ea8f246, type: 3}
   invalidRangeSprite: {fileID: 21300000, guid: 4f9c04fc109f6a441be5f6d3ead8ee76, type: 3}

@@ -12,18 +12,24 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 targetPosition;
     private bool isMoving = false;
-    private GameObject reticleInstance;
-    private SpriteRenderer reticleSpriteRenderer;
+    private GameObject validRangeReticleInstance;
+    private GameObject invalidRangeReticleInstance;
+    private SpriteRenderer validRangeReticleSpriteRenderer;
+    private SpriteRenderer invalidRangeReticleSpriteRenderer;
 
     void Start()
     {
         // Hide the mouse cursor
         Cursor.visible = false;
 
-        // Instantiate the reticle and deactivate it initially
-        reticleInstance = Instantiate(reticlePrefab);
-        reticleInstance.SetActive(false);
-        reticleSpriteRenderer = reticleInstance.GetComponent<SpriteRenderer>();
+        // Instantiate the reticles and deactivate them initially
+        validRangeReticleInstance = Instantiate(reticlePrefab);
+        validRangeReticleInstance.SetActive(false);
+        validRangeReticleSpriteRenderer = validRangeReticleInstance.GetComponent<SpriteRenderer>();
+
+        invalidRangeReticleInstance = Instantiate(reticlePrefab);
+        invalidRangeReticleInstance.SetActive(false);
+        invalidRangeReticleSpriteRenderer = invalidRangeReticleInstance.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -38,15 +44,21 @@ public class PlayerController : MonoBehaviour
             if (distance >= minDistance && distance <= maxDistance)
             {
                 targetPosition = mousePosition;
-                StartCoroutine(MoveToPosition(targetPosition));
             }
+            else
+            {
+                // Calculate the clamped position for the valid range reticle
+                Vector3 direction = (mousePosition - transform.position).normalized;
+                targetPosition = transform.position + direction * Mathf.Clamp(distance, minDistance, maxDistance);
+            }
+            StartCoroutine(MoveToPosition(targetPosition));
         }
 
-        // Update reticle position and visibility
-        UpdateReticle();
+        // Update reticle positions and visibility
+        UpdateReticles();
     }
 
-    private void UpdateReticle()
+    private void UpdateReticles()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = transform.position.z; // Keep the z position the same
@@ -54,15 +66,25 @@ public class PlayerController : MonoBehaviour
         float distance = Vector3.Distance(transform.position, mousePosition);
         if (distance >= minDistance && distance <= maxDistance)
         {
-            reticleInstance.transform.position = mousePosition;
-            reticleSpriteRenderer.sprite = validRangeSprite;
-            reticleInstance.SetActive(true);
+            validRangeReticleInstance.transform.position = mousePosition;
+            validRangeReticleSpriteRenderer.sprite = validRangeSprite;
+            validRangeReticleInstance.SetActive(true);
+
+            invalidRangeReticleInstance.SetActive(false);
         }
         else
         {
-            reticleInstance.transform.position = mousePosition;
-            reticleSpriteRenderer.sprite = invalidRangeSprite;
-            reticleInstance.SetActive(true);
+            // Calculate the clamped position for the valid range reticle
+            Vector3 direction = (mousePosition - transform.position).normalized;
+            Vector3 clampedPosition = transform.position + direction * Mathf.Clamp(distance, minDistance, maxDistance);
+
+            validRangeReticleInstance.transform.position = clampedPosition;
+            validRangeReticleSpriteRenderer.sprite = validRangeSprite;
+            validRangeReticleInstance.SetActive(true);
+
+            invalidRangeReticleInstance.transform.position = mousePosition;
+            invalidRangeReticleSpriteRenderer.sprite = invalidRangeSprite;
+            invalidRangeReticleInstance.SetActive(true);
         }
     }
 
