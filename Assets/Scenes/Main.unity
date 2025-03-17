@@ -204,7 +204,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.07058824, g: 0, b: 0.14117648, a: 1}
+  m_BackGroundColor: {r: 1, g: 0.49622637, b: 0.54231125, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -443,9 +443,9 @@ MonoBehaviour:
   minDistance: 1
   maxDistance: 8
   reticlePrefab: {fileID: 194075436230715057, guid: 00932db1eb2e67b41befed54f00aafc1, type: 3}
-  validRangeSprite: {fileID: 21300000, guid: 55eddf2031a34e64dae9d5368ea8f246, type: 3}
-  invalidRangeSprite: {fileID: 21300000, guid: 4f9c04fc109f6a441be5f6d3ead8ee76, type: 3}
-  midpointSprite: {fileID: 21300000, guid: 186d53c7a88a6c94296ead578bced989, type: 3}
+  validRangeSprite: {fileID: 21300000, guid: 0589bf0597ced2646afd314c08339c50, type: 3}
+  invalidRangeSprite: {fileID: 21300000, guid: 81e3e306c0575a24a97357343b152b78, type: 3}
+  midpointSprite: {fileID: 21300000, guid: 96313bd2588e06448a26c76e3b63b6a0, type: 3}
 --- !u!96 &1807174814
 TrailRenderer:
   serializedVersion: 3
