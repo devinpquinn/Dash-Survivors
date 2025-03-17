@@ -53,14 +53,15 @@ public class PlayerController : MonoBehaviour
             if (distance >= minDistance && distance <= maxDistance)
             {
                 targetPosition = mousePosition;
+                StartCoroutine(MoveToPosition(targetPosition));
             }
-            else
+            else if (distance > maxDistance)
             {
                 // Calculate the clamped position for the valid range reticle
                 Vector3 direction = (mousePosition - transform.position).normalized;
-                targetPosition = transform.position + direction * Mathf.Clamp(distance, minDistance, maxDistance);
+                targetPosition = transform.position + direction * maxDistance;
+                StartCoroutine(MoveToPosition(targetPosition));
             }
-            StartCoroutine(MoveToPosition(targetPosition));
         }
 
         // Update reticle positions and visibility
@@ -77,10 +78,21 @@ public class PlayerController : MonoBehaviour
         {
             validRangeReticleInstance.SetActive(false);
             midpointReticleInstance.SetActive(false); // Add this line
+            invalidRangeReticleInstance.SetActive(false); // Add this line
             return;
         }
         
         float distance = Vector3.Distance(transform.position, mousePosition);
+        if (distance < minDistance)
+        {
+            validRangeReticleInstance.SetActive(false);
+            midpointReticleInstance.SetActive(false);
+            invalidRangeReticleInstance.transform.position = mousePosition; // Add this block
+            invalidRangeReticleSpriteRenderer.sprite = invalidRangeSprite;
+            invalidRangeReticleInstance.SetActive(true);
+            return;
+        }
+        
         if (distance >= minDistance && distance <= maxDistance)
         {
             validRangeReticleInstance.transform.position = mousePosition;
