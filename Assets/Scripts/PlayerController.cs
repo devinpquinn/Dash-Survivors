@@ -9,13 +9,16 @@ public class PlayerController : MonoBehaviour
     public GameObject reticlePrefab;
     public Sprite validRangeSprite;
     public Sprite invalidRangeSprite;
+    public Sprite midpointSprite; // Add this line
 
     private Vector3 targetPosition;
     private bool isMoving = false;
     private GameObject validRangeReticleInstance;
     private GameObject invalidRangeReticleInstance;
+    private GameObject midpointReticleInstance; // Add this line
     private SpriteRenderer validRangeReticleSpriteRenderer;
     private SpriteRenderer invalidRangeReticleSpriteRenderer;
+    private SpriteRenderer midpointReticleSpriteRenderer; // Add this line
 
     void Start()
     {
@@ -30,6 +33,12 @@ public class PlayerController : MonoBehaviour
         invalidRangeReticleInstance = Instantiate(reticlePrefab);
         invalidRangeReticleInstance.SetActive(false);
         invalidRangeReticleSpriteRenderer = invalidRangeReticleInstance.GetComponent<SpriteRenderer>();
+
+        // Instantiate the midpoint reticle and deactivate it initially
+        midpointReticleInstance = Instantiate(reticlePrefab); // Add this block
+        midpointReticleInstance.SetActive(false);
+        midpointReticleSpriteRenderer = midpointReticleInstance.GetComponent<SpriteRenderer>();
+        midpointReticleSpriteRenderer.sprite = midpointSprite;
     }
 
     // Update is called once per frame
@@ -67,6 +76,7 @@ public class PlayerController : MonoBehaviour
         if (mousePosition == transform.position)
         {
             validRangeReticleInstance.SetActive(false);
+            midpointReticleInstance.SetActive(false); // Add this line
             return;
         }
         
@@ -78,6 +88,11 @@ public class PlayerController : MonoBehaviour
             validRangeReticleInstance.SetActive(true);
 
             invalidRangeReticleInstance.SetActive(false);
+
+            // Update midpoint reticle position
+            Vector3 midpointPosition = (transform.position + mousePosition) / 2;
+            midpointReticleInstance.transform.position = midpointPosition;
+            midpointReticleInstance.SetActive(true);
         }
         else
         {
@@ -92,6 +107,11 @@ public class PlayerController : MonoBehaviour
             invalidRangeReticleInstance.transform.position = mousePosition;
             invalidRangeReticleSpriteRenderer.sprite = invalidRangeSprite;
             invalidRangeReticleInstance.SetActive(true);
+
+            // Update midpoint reticle position
+            Vector3 midpointPosition = (transform.position + clampedPosition) / 2;
+            midpointReticleInstance.transform.position = midpointPosition;
+            midpointReticleInstance.SetActive(true);
         }
     }
 
