@@ -297,7 +297,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000558b650d
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -401,7 +401,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 55eddf2031a34e64dae9d5368ea8f246, type: 3}
   m_Color: {r: 0, g: 0.75, b: 1, a: 1}
   m_FlipX: 0
@@ -440,7 +440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5e103b387909e4a966b15e46c3de86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minDistance: 1
+  minDistance: 1.5
   maxDistance: 8
   reticlePrefab: {fileID: 194075436230715057, guid: 00932db1eb2e67b41befed54f00aafc1, type: 3}
   validRangeSprite: {fileID: 21300000, guid: 0589bf0597ced2646afd314c08339c50, type: 3}
@@ -487,7 +487,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: -1
   m_Time: 0.1
   m_PreviewTimeScale: 1
   m_Parameters:
