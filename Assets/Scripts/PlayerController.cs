@@ -136,11 +136,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Helper method to sync the shadow sprite with the main reticle sprite
+    // Helper method to sync the shadow sprite with the main reticle sprite and offset it
     private void SyncShadowSprite(GameObject reticleInstance, Sprite sprite)
     {
+        // Update the shadow sprite
         SpriteRenderer shadowSpriteRenderer = reticleInstance.transform.Find("Shadow").GetComponent<SpriteRenderer>();
         shadowSpriteRenderer.sprite = sprite;
+
+        // Calculate the offset direction (opposite of the direction from the player to the reticle)
+        Vector3 offsetDirection = (reticleInstance.transform.position - transform.position).normalized;
+
+        // Apply the offset to the shadow's position
+        float shadowOffsetDistance = 0.05f; // Adjust this value to control the shadow's distance
+        shadowSpriteRenderer.transform.position = reticleInstance.transform.position + offsetDirection * -shadowOffsetDistance;
     }
 
     private IEnumerator MoveToPosition(Vector3 target)
