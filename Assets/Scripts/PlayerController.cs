@@ -73,12 +73,12 @@ public class PlayerController : MonoBehaviour
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = transform.position.z; // Keep the z position the same
         
-        //if mouse is at exact position of player, hide valid range reticle
+        // If mouse is at the exact position of the player, hide all reticles
         if (mousePosition == transform.position)
         {
             validRangeReticleInstance.SetActive(false);
-            midpointReticleInstance.SetActive(false); // Add this line
-            invalidRangeReticleInstance.SetActive(false); // Add this line
+            midpointReticleInstance.SetActive(false);
+            invalidRangeReticleInstance.SetActive(false);
             return;
         }
         
@@ -87,8 +87,10 @@ public class PlayerController : MonoBehaviour
         {
             validRangeReticleInstance.SetActive(false);
             midpointReticleInstance.SetActive(false);
-            invalidRangeReticleInstance.transform.position = mousePosition; // Add this block
+
+            invalidRangeReticleInstance.transform.position = mousePosition;
             invalidRangeReticleSpriteRenderer.sprite = invalidRangeSprite;
+            SyncShadowSprite(invalidRangeReticleInstance, invalidRangeSprite); // Sync shadow sprite
             invalidRangeReticleInstance.SetActive(true);
             return;
         }
@@ -97,6 +99,7 @@ public class PlayerController : MonoBehaviour
         {
             validRangeReticleInstance.transform.position = mousePosition;
             validRangeReticleSpriteRenderer.sprite = validRangeSprite;
+            SyncShadowSprite(validRangeReticleInstance, validRangeSprite); // Sync shadow sprite
             validRangeReticleInstance.SetActive(true);
 
             invalidRangeReticleInstance.SetActive(false);
@@ -104,6 +107,8 @@ public class PlayerController : MonoBehaviour
             // Update midpoint reticle position
             Vector3 midpointPosition = (transform.position + mousePosition) / 2;
             midpointReticleInstance.transform.position = midpointPosition;
+            midpointReticleSpriteRenderer.sprite = midpointSprite;
+            SyncShadowSprite(midpointReticleInstance, midpointSprite); // Sync shadow sprite
             midpointReticleInstance.SetActive(true);
         }
         else
@@ -114,17 +119,28 @@ public class PlayerController : MonoBehaviour
 
             validRangeReticleInstance.transform.position = clampedPosition;
             validRangeReticleSpriteRenderer.sprite = validRangeSprite;
+            SyncShadowSprite(validRangeReticleInstance, validRangeSprite); // Sync shadow sprite
             validRangeReticleInstance.SetActive(true);
 
             invalidRangeReticleInstance.transform.position = mousePosition;
             invalidRangeReticleSpriteRenderer.sprite = invalidRangeSprite;
+            SyncShadowSprite(invalidRangeReticleInstance, invalidRangeSprite); // Sync shadow sprite
             invalidRangeReticleInstance.SetActive(true);
 
             // Update midpoint reticle position
             Vector3 midpointPosition = (transform.position + clampedPosition) / 2;
             midpointReticleInstance.transform.position = midpointPosition;
+            midpointReticleSpriteRenderer.sprite = midpointSprite;
+            SyncShadowSprite(midpointReticleInstance, midpointSprite); // Sync shadow sprite
             midpointReticleInstance.SetActive(true);
         }
+    }
+
+    // Helper method to sync the shadow sprite with the main reticle sprite
+    private void SyncShadowSprite(GameObject reticleInstance, Sprite sprite)
+    {
+        SpriteRenderer shadowSpriteRenderer = reticleInstance.transform.Find("Shadow").GetComponent<SpriteRenderer>();
+        shadowSpriteRenderer.sprite = sprite;
     }
 
     private IEnumerator MoveToPosition(Vector3 target)
