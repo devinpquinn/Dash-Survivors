@@ -40,6 +40,20 @@ public class Enemy : MonoBehaviour
             if (textMesh != null)
             {
                 textMesh.text = damage.ToString();
+
+                // Set the text color based on the damage value
+                if (damage >= 1 && damage <= 4)
+                {
+                    textMesh.color = Color.grey;
+                }
+                else if (damage >= 5 && damage <= 9)
+                {
+                    textMesh.color = Color.white;
+                }
+                else if (damage == 10)
+                {
+                    textMesh.color = Color.yellow;
+                }
             }
         }
     }
