@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour
     private IEnumerator FlashWhite()
     {
         spriteRenderer.color = Color.white;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.2f);
         spriteRenderer.color = originalColor;
     }
 }

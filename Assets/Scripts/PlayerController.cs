@@ -240,7 +240,8 @@ public class PlayerController : MonoBehaviour
         // Calculate damage based on distance to the midpoint
         float distanceToMidpoint = Vector3.Distance(enemy.transform.position, dashCenter);
         float maxDistanceToMidpoint = dashDistance / 2;
-        float damage = Mathf.Lerp(100f, 1f, distanceToMidpoint / maxDistanceToMidpoint);
+        float damage = Mathf.Lerp(10f, 0f, distanceToMidpoint / maxDistanceToMidpoint);
+        damage += 1; //adjust damage to make 10 more likely and 0 impossible
 
         // Apply damage
         enemy.Hit((int)damage);
