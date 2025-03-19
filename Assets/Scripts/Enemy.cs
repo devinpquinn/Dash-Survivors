@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using Unity.VisualScripting;
 
 public class Enemy : MonoBehaviour
 {
@@ -8,7 +10,8 @@ public class Enemy : MonoBehaviour
     private Color originalColor;
     private Coroutine flashCoroutine;
 
-    // Start is called before the first frame update
+    public GameObject damagePopupPrefab; // Assign the DamagePopup prefab in the Inspector
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -27,6 +30,17 @@ public class Enemy : MonoBehaviour
                 StopCoroutine(flashCoroutine);
             }
             flashCoroutine = StartCoroutine(FlashWhite());
+        }
+
+        // Show the damage popup
+        if (damagePopupPrefab != null)
+        {
+            GameObject popup = Instantiate(damagePopupPrefab, transform.position, Quaternion.identity);
+            TextMeshPro textMesh = popup.GetComponentInChildren<TextMeshPro>();
+            if (textMesh != null)
+            {
+                textMesh.text = damage.ToString();
+            }
         }
     }
 
