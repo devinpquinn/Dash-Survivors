@@ -219,22 +219,30 @@ public class PlayerController : MonoBehaviour
             return distance1.CompareTo(distance2);
         });
 
-        // Damage all enemies hit in order from earliest to latest hit over 0.2 seconds
-        float damageInterval = 0.1f / enemiesHit.Count;
+        // Start a separate coroutine for each enemy to apply damage after the calculated delay
         foreach (Enemy enemy in enemiesHit)
         {
-            // Calculate damage based on distance to the midpoint
-            float distanceToMidpoint = Vector3.Distance(enemy.transform.position, dashCenter);
-            float maxDistanceToMidpoint = dashDistance / 2;
-            float damage = Mathf.Lerp(100f, 0f, distanceToMidpoint / maxDistanceToMidpoint);
+            float distanceFromStart = Vector3.Distance(startPos, enemy.transform.position);
+            float delay = Mathf.Lerp(0f, 0.1f, distanceFromStart / dashDistance);
 
-            // Apply damage
-            enemy.Hit((int)damage);
-
-            // Wait before hitting the next enemy
-            yield return new WaitForSeconds(damageInterval);
+            // Start a coroutine for this enemy
+            StartCoroutine(ApplyDamageAfterDelay(enemy, delay, dashCenter, dashDistance));
         }
 
         yield return null;
+    }
+
+    private IEnumerator ApplyDamageAfterDelay(Enemy enemy, float delay, Vector3 dashCenter, float dashDistance)
+    {
+        // Wait for the calculated delay
+        yield return new WaitForSeconds(delay);
+
+        // Calculate damage based on distance to the midpoint
+        float distanceToMidpoint = Vector3.Distance(enemy.transform.position, dashCenter);
+        float maxDistanceToMidpoint = dashDistance / 2;
+        float damage = Mathf.Lerp(100f, 0f, distanceToMidpoint / maxDistanceToMidpoint);
+
+        // Apply damage
+        enemy.Hit((int)damage);
     }
 }
