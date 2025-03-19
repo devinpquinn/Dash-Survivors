@@ -52,17 +52,17 @@ public class Enemy : MonoBehaviour
                 textMesh.text = damage.ToString();
 
                 // Set the text color based on the damage value
-                if (damage >= 1 && damage <= 4)
+                if (damage >= 1 && damage <= 9)
                 {
-                    textMesh.color = Color.grey;
-                }
-                else if (damage >= 5 && damage <= 9)
-                {
-                    textMesh.color = Color.white;
+                    // Interpolate between dark grey and white
+                    Color darkGrey = new Color(0.2f, 0.2f, 0.2f); // Dark grey (RGB: 51, 51, 51)
+                    Color white = Color.white; // White (RGB: 255, 255, 255)
+                    float t = (damage - 1) / 8f; // Normalize damage to a range of 0 to 1
+                    textMesh.color = Color.Lerp(darkGrey, white, t);
                 }
                 else if (damage == 10)
                 {
-                    textMesh.color = Color.yellow;
+                    textMesh.color = new Color(1f, 0.84f, 0f); // Gold (RGB: 255, 215, 0)
                 }
             }
         }
