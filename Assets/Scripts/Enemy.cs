@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
     private Coroutine flashCoroutine;
+    private Animator animator; // Store the Animator component
 
     public GameObject damagePopupPrefab; // Assign the DamagePopup prefab in the Inspector
 
@@ -19,6 +20,9 @@ public class Enemy : MonoBehaviour
         {
             originalColor = spriteRenderer.color;
         }
+
+        // Get the Animator component once
+        animator = GetComponent<Animator>();
     }
 
     public void Hit(int damage)
@@ -30,6 +34,12 @@ public class Enemy : MonoBehaviour
                 StopCoroutine(flashCoroutine);
             }
             flashCoroutine = StartCoroutine(FlashWhite());
+        }
+
+        // Restart the hit animation
+        if (animator != null)
+        {
+            animator.Play("EnemyHit", 0, 0f);
         }
 
         // Show the damage popup
