@@ -168,6 +168,8 @@ public class PlayerController : MonoBehaviour
 
         // Move to 90% of the way instantly
         transform.position = Vector3.Lerp(startPosition, target, 0.9f);
+        
+        StartCoroutine(DealDamageAlongDash(startPosition, target)); // Add this line
 
         // Second phase: decelerate to the target
         elapsedTime = 0f;
@@ -181,5 +183,58 @@ public class PlayerController : MonoBehaviour
         // Ensure the player reaches the exact target position
         transform.position = target;
         isMoving = false;
+    }
+    
+    IEnumerator DealDamageAlongDash(Vector3 startPos, Vector3 endPos)
+    {
+        // Calculate the player's width along the dash path
+        float playerWidth = 0.5f; // Adjust this value to control the player's width
+
+        // Calculate the dash direction and distance
+        Vector3 dashDirection = (endPos - startPos).normalized;
+        float dashDistance = Vector3.Distance(startPos, endPos);
+
+        // Calculate the center and size of the dash path for the OverlapBox
+        Vector3 dashCenter = (startPos + endPos) / 2;
+        Vector2 dashSize = new Vector2(dashDistance, playerWidth);
+
+        // Detect all enemies within the dash path using OverlapBox
+        Collider2D[] hitColliders = Physics2D.OverlapBoxAll(dashCenter, dashSize, Vector2.SignedAngle(Vector2.right, dashDirection));
+        List<Enemy> enemiesHit = new List<Enemy>();
+
+        foreach (Collider2D collider in hitColliders)
+        {
+            Enemy enemy = collider.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemiesHit.Add(enemy);
+            }
+        }
+
+        // Sort enemies by their distance from the start position
+        enemiesHit.Sort((enemy1, enemy2) =>
+        {
+            float distance1 = Vector3.Distance(startPos, enemy1.transform.position);
+            float distance2 = Vector3.Distance(startPos, enemy2.transform.position);
+            return distance1.CompareTo(distance2);
+        });
+
+        // Damage all enemies hit in order from earliest to latest hit over 0.2 seconds
+        float damageInterval = 0.1f / enemiesHit.Count;
+        foreach (Enemy enemy in enemiesHit)
+        {
+            // Calculate damage based on distance to the midpoint
+            float distanceToMidpoint = Vector3.Distance(enemy.transform.position, dashCenter);
+            float maxDistanceToMidpoint = dashDistance / 2;
+            float damage = Mathf.Lerp(100f, 0f, distanceToMidpoint / maxDistanceToMidpoint);
+
+            // Apply damage
+            enemy.Hit((int)damage);
+
+            // Wait before hitting the next enemy
+            yield return new WaitForSeconds(damageInterval);
+        }
+
+        yield return null;
     }
 }
