@@ -154,6 +154,14 @@ public class PlayerController : MonoBehaviour
     private IEnumerator MoveToPosition(Vector3 target)
     {
         isMoving = true;
+
+        // Disable the player's collider at the start of the dash
+        Collider2D playerCollider = GetComponent<Collider2D>();
+        if (playerCollider != null)
+        {
+            playerCollider.enabled = false;
+        }
+
         Vector3 startPosition = transform.position;
         float elapsedTime = 0f;
         float duration = 0.1f;
@@ -182,6 +190,13 @@ public class PlayerController : MonoBehaviour
 
         // Ensure the player reaches the exact target position
         transform.position = target;
+
+        // Re-enable the player's collider at the end of the dash
+        if (playerCollider != null)
+        {
+            playerCollider.enabled = true;
+        }
+
         isMoving = false;
     }
     
