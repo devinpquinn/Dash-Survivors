@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
     public int health = 10; // Add health property
     private Transform target; // Reference to the player
     public Color damagedColor = Color.red; // Add a damaged color property
+    public Sprite deathSprite; // Add a death sprite property
 
     void Start()
     {
@@ -108,12 +109,24 @@ public class Enemy : MonoBehaviour
             rb.velocity = Vector2.zero;
         }
 
-        // Flash white before disappearing
+        // Disable all colliders
+        Collider2D[] colliders = GetComponents<Collider2D>();
+        foreach (Collider2D collider in colliders)
+        {
+            collider.enabled = false;
+        }
+
+        // Flash white and then switch to the death sprite
         if (spriteRenderer != null)
         {
             spriteRenderer.color = Color.white;
+            yield return new WaitForSeconds(0.1f); // Short flash duration
+
+            // Switch to the death sprite
+            spriteRenderer.sprite = deathSprite;
         }
-        yield return new WaitForSeconds(0.2f);
+
+        yield return new WaitForSeconds(0.2f); // Wait before destroying the object
         Destroy(gameObject);
     }
 
