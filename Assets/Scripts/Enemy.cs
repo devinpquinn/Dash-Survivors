@@ -20,14 +20,14 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         if (spriteRenderer != null)
         {
             originalColor = spriteRenderer.color;
         }
 
         // Get the Animator component once
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
 
         // Get the Rigidbody2D component
         rb = GetComponent<Rigidbody2D>();
