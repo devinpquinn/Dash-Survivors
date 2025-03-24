@@ -102,6 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damagePopupPrefab: {fileID: 7925733635274027141, guid: 7a6a3841b42df2643a8e297731778c60, type: 3}
   health: 10
+  damagedColor: {r: 0.77254903, g: 0.4635294, b: 0.68362254, a: 1}
 --- !u!95 &6372909791384351547
 Animator:
   serializedVersion: 5

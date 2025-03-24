@@ -10,10 +10,12 @@ public class Enemy : MonoBehaviour
     private Color originalColor;
     private Coroutine flashCoroutine;
     private Animator animator; // Store the Animator component
+    private Rigidbody2D rb; // Add a reference to Rigidbody2D
 
     public GameObject damagePopupPrefab; // Assign the DamagePopup prefab in the Inspector
     public int health = 10; // Add health property
     private Transform target; // Reference to the player
+    public Color damagedColor = Color.red; // Add a damaged color property
 
     void Start()
     {
@@ -25,15 +27,18 @@ public class Enemy : MonoBehaviour
 
         // Get the Animator component once
         animator = GetComponent<Animator>();
+
+        // Get the Rigidbody2D component
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
-        // Move toward the player
-        if (target != null)
+        // Move toward the player using Rigidbody2D
+        if (target != null && rb != null)
         {
-            Vector3 direction = (target.position - transform.position).normalized;
-            transform.position += direction * Time.deltaTime;
+            Vector2 direction = (target.position - transform.position).normalized;
+            rb.velocity = direction; // Set velocity to move toward the player
         }
     }
 
@@ -93,6 +98,12 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator Die()
     {
+        // Stop movement before dying
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+        }
+
         // Flash white before disappearing
         if (spriteRenderer != null)
         {
@@ -106,6 +117,12 @@ public class Enemy : MonoBehaviour
     {
         spriteRenderer.color = Color.white;
         yield return new WaitForSeconds(0.2f);
-        spriteRenderer.color = originalColor;
+
+        // Update the sprite color based on health after flashing white
+        if (spriteRenderer != null)
+        {
+            float healthPercentage = Mathf.Clamp01((float)health / 10f); // Normalize health to a range of 0 to 1
+            spriteRenderer.color = Color.Lerp(damagedColor, originalColor, healthPercentage);
+        }
     }
 }
