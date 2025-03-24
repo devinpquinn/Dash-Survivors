@@ -81,10 +81,14 @@ public class Enemy : MonoBehaviour
                     Color white = Color.white; // White (RGB: 255, 255, 255)
                     float t = (damage - 1) / 8f; // Normalize damage to a range of 0 to 1
                     textMesh.color = Color.Lerp(darkGrey, white, t);
+
+                    // Lerp font size between 5 and 8
+                    textMesh.fontSize = Mathf.Lerp(5f, 7f, t);
                 }
                 else if (damage == 10)
                 {
                     textMesh.color = new Color(1f, 0.84f, 0f); // Gold (RGB: 255, 215, 0)
+                    textMesh.fontSize = 10f; // Set font size to 10 for max damage
                 }
             }
         }
