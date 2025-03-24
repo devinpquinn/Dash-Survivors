@@ -12,6 +12,8 @@ public class Enemy : MonoBehaviour
     private Animator animator; // Store the Animator component
 
     public GameObject damagePopupPrefab; // Assign the DamagePopup prefab in the Inspector
+    public int health = 10; // Add health property
+    private Transform target; // Reference to the player
 
     void Start()
     {
@@ -23,6 +25,21 @@ public class Enemy : MonoBehaviour
 
         // Get the Animator component once
         animator = GetComponent<Animator>();
+    }
+
+    void Update()
+    {
+        // Move toward the player
+        if (target != null)
+        {
+            Vector3 direction = (target.position - transform.position).normalized;
+            transform.position += direction * Time.deltaTime;
+        }
+    }
+
+    public void SetTarget(Transform playerTransform)
+    {
+        target = playerTransform;
     }
 
     public void Hit(int damage)
@@ -66,6 +83,23 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
+
+        health -= damage;
+        if (health <= 0)
+        {
+            StartCoroutine(Die());
+        }
+    }
+
+    private IEnumerator Die()
+    {
+        // Flash white before disappearing
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = Color.white;
+        }
+        yield return new WaitForSeconds(0.2f);
+        Destroy(gameObject);
     }
 
     private IEnumerator FlashWhite()
