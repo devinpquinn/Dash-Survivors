@@ -44,11 +44,14 @@ public class EnemySpawner : MonoBehaviour
         // Instantiate the enemy
         GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 
-        // Set the enemy to move toward the player
+        // Set the enemy's max health and scale
         Enemy enemyScript = enemy.GetComponent<Enemy>();
         if (enemyScript != null)
         {
             enemyScript.SetTarget(player);
+            
+            int maxHealth = Random.Range(8, 13); // Random max health between 8 and 12
+            enemyScript.Initialize(maxHealth);
         }
     }
 }

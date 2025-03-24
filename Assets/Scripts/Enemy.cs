@@ -11,12 +11,23 @@ public class Enemy : MonoBehaviour
     private Coroutine flashCoroutine;
     private Animator animator; // Store the Animator component
     private Rigidbody2D rb; // Add a reference to Rigidbody2D
+    private int maxHealth; // Store the max health
 
     public GameObject damagePopupPrefab; // Assign the DamagePopup prefab in the Inspector
     public int health = 10; // Add health property
     private Transform target; // Reference to the player
     public Color damagedColor = Color.red; // Add a damaged color property
     public Sprite deathSprite; // Add a death sprite property
+
+    public void Initialize(int maxHealth)
+    {
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
+
+        // Scale the enemy based on max health (10 health = scale 1)
+        float scale = maxHealth / 10f;
+        transform.localScale = new Vector3(scale, scale, 1f);
+    }
 
     void Start()
     {
