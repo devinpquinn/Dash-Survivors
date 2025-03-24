@@ -120,9 +120,6 @@ public class Enemy : MonoBehaviour
         if (spriteRenderer != null)
         {
             spriteRenderer.color = Color.white;
-            yield return new WaitForSeconds(0.1f); // Short flash duration
-
-            // Switch to the death sprite
             spriteRenderer.sprite = deathSprite;
         }
 
